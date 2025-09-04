@@ -92,7 +92,7 @@ Please analyze the code and return results strictly in the following JSON format
       "column_start": column_start_position_for_single_line,
       "column_end": column_end_position_for_single_line,
       "line_content": "actual code line content",
-      "issue_type": "Meaningless Comment|Missing Comments",
+      "issue_type": "Useless Comments|Missing Comments",
       "severity": "high|medium|low",
       "description": "detailed description of the comment issue",
       "suggestion": "specific suggestion to improve comments"
@@ -101,17 +101,20 @@ Please analyze the code and return results strictly in the following JSON format
 }}
 
 Analysis criteria:
-1. Meaningless Comments: Comments that don't add value, are outdated, or state the obvious
+1. Useless Comments: Comments that don't add value, are outdated, state the obvious, inconsistent with code behavior, or contain code snippets
 2. Missing Comments: Complex logic blocks (algorithms, calculations, business logic) without explanatory comments
-3. Code Snippets in Comments: Comments containing the content of the code
-4. Comment-Code Inconsistencies: Comments that are inconsistent with the code behavior
 
-Focus on Meaningless Comments (single-line issues):
+Focus on Useless Comments (single-line issues):
 - Comments that simply restate what the code does (e.g., "increment i" for i++)
 - Outdated comments that no longer match the code
 - Commented-out code that should be removed
 - Comments that add no value or context
 - Generic comments like "TODO: fix this" without specifics
+- Comments that contradict the code behavior
+- Comments that are incorrect or misleading
+- Overly obvious comments for simple operations
+- Comments that include actual code snippets instead of explanations
+- Comments that duplicate code logic without adding context
 
 Focus on Missing Comments (multi-line issues):
 - Complex algorithms without explanation
@@ -121,18 +124,8 @@ Focus on Missing Comments (multi-line issues):
 - Data transformations or processing without description
 - Non-obvious code patterns or optimizations
 
-Focus on Code Snippets in Comments (single-line issues):
-- Comments that include actual code snippets instead of explanations
-- Comments that duplicate code logic without adding context
-
-Focus on Comment-Code Inconsistencies (single-line issues):
-- Comments that contradict the code behavior
-- Comments that are incorrect
-
 Single-line issues (provide line_number, column_start, column_end):
-- Meaningless Comment: Specific comment line that is useless or misleading
-- Code Snippets in Comments: Comment line containing code snippet
-- Comment-Code Inconsistencies: Comment line that contradicts code
+- Useless Comments: Specific comment line that is useless, misleading, contradicts code, or contains code snippets
 
 Multi-line issues (provide line_number as start, line_end as end):
 - Missing Comments: Complex code block that lacks necessary explanatory comments
@@ -314,7 +307,7 @@ def analyze_comments_in_directory(path):
                             issue_type = issue.get('issue_type', 'Comment Issue')
                             
                             # Handle single-line vs multi-line issues
-                            if issue_type == 'Meaningless Comment':
+                            if issue_type == 'Useless Comments':
                                 # Single-line issues with column positions
                                 col_start = issue.get('column_start', '?')
                                 col_end = issue.get('column_end', '?')
@@ -391,13 +384,14 @@ def analyze_comments_in_directory(path):
                     print(f"  {color}{severity.upper()}: {count}{Colors.RESET}")
             
             print(f"\n{Colors.YELLOW}💡 AI Comment Recommendations:{Colors.RESET}")
-            print("1. Remove or update meaningless and outdated comments")
+            print("1. Remove or update useless, outdated, and incorrect comments")
             print("2. Add explanatory comments for complex algorithms and business logic")
             print("3. Document the 'why' behind non-obvious code decisions")
             print("4. Use clear, concise language in comments")
             print("5. Keep comments up-to-date with code changes")
             print("6. Remove commented-out code that is no longer needed")
             print("7. Add context for complex mathematical formulas or calculations")
+            print("8. Replace code snippets in comments with clear explanations")
             
         else:
             print(f"\n{Colors.YELLOW}✅ AI comment analysis complete - No comment issues detected!{Colors.RESET}")

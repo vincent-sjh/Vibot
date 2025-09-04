@@ -81,7 +81,7 @@ def main():
         '-c',
         '--comment',
         action='store_true',
-        help='🤖 AI-powered code comments analysis - detects meaningless comments, missing necessary comments, code snippets in comments, and comment-code inconsistencies'
+        help='🤖 AI-powered code comments analysis - detects useless comments and missing comments'
     )
     
     parser.add_argument(
