@@ -106,6 +106,20 @@ def main():
     )
     
     parser.add_argument(
+        '-g',
+        '--gluttonous',
+        action='store_true',
+        help='Play a gluttonous snake game in terminal!'
+    )
+    
+    parser.add_argument(
+        '--map-size',
+        type=int,
+        default=10,
+        help='Map size for gluttonous snake game (default: 10)'
+    )
+    
+    parser.add_argument(
         '--path',
         type=str,
         default='.',
@@ -156,8 +170,8 @@ def main():
 
     
 
-    # Check if logo should be displayed (except for --version and --logo arguments)
-    if not any(arg in sys.argv for arg in ['-v', '--version', '-l', '--logo']):
+    # Check if logo should be displayed (except for --version, --logo, and --gluttonous arguments)
+    if not any(arg in sys.argv for arg in ['-v', '--version', '-l', '--logo', '-g', '--gluttonous']):
         print_logo()
     
     
@@ -200,6 +214,9 @@ def main():
         )
     elif args.name:
         analyze_naming_in_directory(args.path)
+    elif args.gluttonous:
+        from vibot.commands.gluttonous import main as snake_main
+        snake_main(getattr(args, 'map_size', 10))
     elif len(sys.argv) == 1:
         parser.print_help()
 
